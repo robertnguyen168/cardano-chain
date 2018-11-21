@@ -214,6 +214,8 @@ instance (Integral a, Goblin g a) => Goblin g (Ratio a) where
     return $ n % d
   conjure = (%) <$> conjure <*> conjure
 
+instance Goblin g a => Goblin g (Maybe a)
+
 -- | Our list goblin behaves slightly differently, since it pulls whole lists of
 -- things from the bag of tricks, and is also specialised to do some more
 -- messing about with lists.
