@@ -18,6 +18,7 @@ import Data.List (splitAt)
 import qualified Data.List as List
 import qualified Data.Set as Set
 import qualified Data.Map as Map
+import Data.Ratio (Ratio, (%), numerator, denominator)
 import Data.Typeable (Typeable)
 import Data.TypeRepMap
 import qualified Data.TypeRepMap as TM
@@ -205,6 +206,13 @@ instance GeneOps a => Goblin a Int where
 --------------------------------------------------------------------------------
 
 instance (Goblin g a, Goblin g b) => Goblin g (a,b)
+
+instance (Integral a, Goblin g a) => Goblin g (Ratio a) where
+  tinker obj = do
+    n <- tinker $ numerator obj
+    d <- tinker $ denominator obj
+    return $ n % d
+  conjure = (%) <$> conjure <*> conjure
 
 -- | Our list goblin behaves slightly differently, since it pulls whole lists of
 -- things from the bag of tricks, and is also specialised to do some more
